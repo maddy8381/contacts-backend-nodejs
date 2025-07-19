@@ -3,6 +3,15 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const setTokenCookie = (res, accessToken) => {
+  res.cookie("SessionToken", accessToken, {
+    httpOnly: true,
+    // secure: process.env.NODE_ENV === "production", // send only over HTTPS in production
+    // sameSite: "strict", // protects against CSRF
+    maxAge: 15 * 60 * 1000, // 15 minutes
+  });
+};
+
 const registerUser = asyncHanlder(async (req, res, next) => {
   const { fullName, email, password, mobileNumber } = req.body;
 
@@ -32,27 +41,20 @@ const registerUser = asyncHanlder(async (req, res, next) => {
       {
         user: {
           email: user.email,
-          id: user.id
+          id: user.id,
         },
       },
       process.env.ACCESS_TOKEN_SECERT,
       { expiresIn: "15m" }
     );
-     res.cookie("SessionToken", accessToken, {
-      httpOnly: true,
-      // secure: process.env.NODE_ENV === "production", // send only over HTTPS in production
-      sameSite: "strict", // protects against CSRF
-      maxAge: 15 * 60 * 1000, // 15 minutes
-    });
-      res.status(200).json({ email: user.email, accessToken });
+    setTokenCookie(res, accessToken);
+    res.status(200).json({ email: user.email, accessToken });
   } else {
     res.status(400);
     throw new Error("User data is not valid");
   }
   res.json({ message: "Register the user" });
 });
-
-
 
 const logInUser = asyncHanlder(async (req, res) => {
   const { email, password } = req.body;
@@ -69,13 +71,15 @@ const logInUser = asyncHanlder(async (req, res) => {
       {
         user: {
           email: user.email,
-          id: user.id
+          id: user.id,
         },
       },
       process.env.ACCESS_TOKEN_SECERT,
       { expiresIn: "15m" }
     );
-      res.status(200).json({ accessToken });
+
+    setTokenCookie(res, accessToken);
+    res.status(200).json({ accessToken });
   } else {
     res.status(401);
     throw new Error("Email or password is incorrect");
