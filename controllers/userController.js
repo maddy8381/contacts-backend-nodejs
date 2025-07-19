@@ -6,9 +6,9 @@ const jwt = require("jsonwebtoken");
 const setTokenCookie = (res, accessToken) => {
   res.cookie("SessionToken", accessToken, {
     httpOnly: true,
-    // secure: process.env.NODE_ENV === "production", // send only over HTTPS in production
-    // sameSite: "strict", // protects against CSRF
-    maxAge: 15 * 60 * 1000, // 15 minutes
+    secure: true, // ✅ must be true on HTTPS (like Render)
+    sameSite: "none", // ✅ allow cross-origin cookies
+    maxAge: 15 * 60 * 1000,
   });
 };
 
