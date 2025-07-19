@@ -14,7 +14,9 @@ connectDb();
 app.use(
   cors({
     origin: "*", // Replace with your frontend origin
-    // credentials: true, // Only if you're using cookies or auth headers
+    credentials: true, // Important for cookies
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 

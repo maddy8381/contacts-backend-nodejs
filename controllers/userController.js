@@ -7,7 +7,7 @@ const setTokenCookie = (res, accessToken) => {
   res.cookie("SessionToken", accessToken, {
     httpOnly: true,
     secure: true, // ✅ must be true on HTTPS (like Render)
-    sameSite: "true", // ✅ allow cross-origin cookies
+    sameSite: "none", // ✅ allow cross-origin cookies
     maxAge: 15 * 60 * 1000,
   });
 };
@@ -48,12 +48,11 @@ const registerUser = asyncHanlder(async (req, res, next) => {
       { expiresIn: "15m" }
     );
     setTokenCookie(res, accessToken);
-    res.status(200).json({ email: user.email, accessToken });
+    res.status(201).json({ email: user.email, accessToken });
   } else {
     res.status(400);
     throw new Error("User data is not valid");
   }
-  res.json({ message: "Register the user" });
 });
 
 const logInUser = asyncHanlder(async (req, res) => {
