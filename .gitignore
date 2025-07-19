@@ -5,8 +5,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # dotenv environment variables
-.env
-.env.*.local
+# .env
+# .env.*.local
 
 
 # Optional: if using TypeScript
