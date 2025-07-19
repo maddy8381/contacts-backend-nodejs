@@ -1,5 +1,6 @@
 const express = require('express');
 require("dotenv").config();
+const cors = require("cors");
 const errorHandler = require("./middleware/errorHandler");
 const connectDb = require('./config/dbConnection');
 
@@ -9,6 +10,12 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 connectDb();
+
+// ✅ Allow requests from frontend
+app.use(cors({
+  origin: "http://localhost:5173", // Replace with your frontend origin
+  credentials: true, // Only if you're using cookies or auth headers
+}));
 
 // To get payload in json format - using built in middleware.
 app.use(express.json());
