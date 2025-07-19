@@ -1,21 +1,22 @@
-const express = require('express');
+const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 const errorHandler = require("./middleware/errorHandler");
-const connectDb = require('./config/dbConnection');
+const connectDb = require("./config/dbConnection");
 
 const app = express();
-
 
 const PORT = process.env.PORT || 8000;
 
 connectDb();
 
 // ✅ Allow requests from frontend
-app.use(cors({
-  origin: "http://localhost:5173", // Replace with your frontend origin
-  credentials: true, // Only if you're using cookies or auth headers
-}));
+app.use(
+  cors({
+    origin: "https://contacts-fe-react-vite-hook-form.onrender.com", // Replace with your frontend origin
+    credentials: true, // Only if you're using cookies or auth headers
+  })
+);
 
 // To get payload in json format - using built in middleware.
 app.use(express.json());
@@ -27,5 +28,5 @@ app.use("/api/dashboard", require("./routes/dashboardRoutes"));
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-    console.log("Express BE is running on port: ", PORT);
-})
+  console.log("Express BE is running on port: ", PORT);
+});
