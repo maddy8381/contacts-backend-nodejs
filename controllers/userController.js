@@ -38,6 +38,12 @@ const registerUser = asyncHanlder(async (req, res, next) => {
       process.env.ACCESS_TOKEN_SECERT,
       { expiresIn: "15m" }
     );
+     res.cookie("SessionToken", accessToken, {
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === "production", // send only over HTTPS in production
+      sameSite: "strict", // protects against CSRF
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
       res.status(200).json({ email: user.email, accessToken });
   } else {
     res.status(400);
