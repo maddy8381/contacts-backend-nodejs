@@ -13,8 +13,8 @@ connectDb();
 // ✅ Allow requests from frontend
 app.use(
   cors({
-    origin: "https://contacts-fe-react-vite-hook-form.onrender.com", // Replace with your frontend origin
-    credentials: true, // Only if you're using cookies or auth headers
+    origin: "*", // Replace with your frontend origin
+    // credentials: true, // Only if you're using cookies or auth headers
   })
 );
 
