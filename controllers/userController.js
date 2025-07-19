@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const setTokenCookie = (res, accessToken) => {
   res.cookie("SessionToken", accessToken, {
     httpOnly: true,
-    secure: true, // ✅ must be true on HTTPS (like Render)
+    secure: false, // ✅ must be true on HTTPS (like Render)
     sameSite: "none", // ✅ allow cross-origin cookies
     maxAge: 15 * 60 * 1000,
   });
