@@ -16,13 +16,17 @@ const registerUser = asyncHanlder(async (req, res, next) => {
   const { fullName, email, password, mobileNumber } = req.body;
 
   if (!fullName || !email || !password || !mobileNumber) {
-    res.status(400);
+    res.status(400).json({
+      message: "All fields are mandatory",
+    });
     throw new Error("All fields are mandatory");
   }
 
   const isUserAlreadyAvailable = await User.findOne({ email });
   if (isUserAlreadyAvailable) {
-    res.status(400);
+    res.status(400).json({
+      message: "User already exists",
+    });
     throw new Error("User already exists");
   }
 
@@ -50,7 +54,9 @@ const registerUser = asyncHanlder(async (req, res, next) => {
     setTokenCookie(res, accessToken);
     res.status(201).json({ email: user.email, accessToken });
   } else {
-    res.status(400);
+    res.status(400).json({
+      message: "User data is not valid",
+    });
     throw new Error("User data is not valid");
   }
 });
@@ -80,7 +86,9 @@ const logInUser = asyncHanlder(async (req, res) => {
     setTokenCookie(res, accessToken);
     res.status(200).json({ accessToken });
   } else {
-    res.status(401);
+    res.status(401).json({
+      message: "Email id or password is incorrect",
+    });
     throw new Error("Email or password is incorrect");
   }
 });
