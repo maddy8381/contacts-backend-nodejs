@@ -1,4 +1,4 @@
-Node js BE sample project
+# Node js BE sample project
 
 Hosted using [render.com](https://dashboard.render.com/)
 .env can be recreated from render.com
