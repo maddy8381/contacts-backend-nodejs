@@ -2,10 +2,11 @@ const asyncHandler = require("express-async-handler");
 const Contact = require("../models/contactModel");
 
 const createContact = asyncHandler(async (req, res) => {
-  console.log("The request body is :", req.body);
   const { name, email, mobileNumber } = req.body || {};
   if (!name || !email || !mobileNumber) {
-    res.status(400);
+    res.status(400).json({
+      message: "All fields are mandatory !",
+    });
     throw new Error("All fields are mandatory !");
   }
   const contact = await Contact.create({
@@ -14,21 +15,26 @@ const createContact = asyncHandler(async (req, res) => {
     mobileNumber,
     user_id: req.user.id,
   });
-  console.log("Contact created :", contact);
   if (contact)
     res.status(201).json({
       success: true,
       email: contact.email,
     });
   else {
-    res.status(400);
+    res.status(400).json({
+      message: "Unable to create contact",
+    });
     throw new Error("Unable to create contact");
   }
 });
 
 const getContacts = asyncHandler(async (req, res) => {
   const contacts = await Contact.find({ user_id: req.user.id });
-  res.status(200).json(contacts);
+  if (contacts) res.status(200).json(contacts);
+  else
+    res.status(400).json({
+      message: "Contacts not found",
+    });
 });
 
 const deleteContact = asyncHandler(async (req, res) => {

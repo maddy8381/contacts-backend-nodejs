@@ -25,6 +25,7 @@ app.use(express.json());
 
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/dashboard", require("./routes/dashboardRoutes"));
+app.use("/api/contacts", require("./routes/contactRoutes"));
 
 // application level custom middleware to capture and throw proper error
 app.use(errorHandler);
